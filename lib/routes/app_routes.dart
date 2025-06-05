@@ -1,14 +1,18 @@
 import 'package:drip_store/features/authentication/login_screen.dart';
 import 'package:drip_store/features/authentication/register_screen.dart';
 import 'package:drip_store/features/home/home_screen.dart';
+import 'package:drip_store/model/api/api_service.dart';
 // import 'package:drip_store/features/main_screen.dart';
 import 'package:drip_store/provider/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+final authProvider = AuthProvider(ApiService());
+
 final GoRouter _appRouter = GoRouter(
   initialLocation: '/login',
+  refreshListenable: authProvider,
   redirect: (context, state) {
     final auth = context.read<AuthProvider>();
     final currentLocation = state.uri.toString();

@@ -1,9 +1,7 @@
-import 'package:drip_store/provider/visibility_provider.dart';
 import 'package:drip_store/styles_manager/values_manager.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-class FormFieldWidget extends StatelessWidget {
+class FormFieldWidget extends StatefulWidget {
   final TextEditingController controller;
   final String hintText;
   final bool isPassword;
@@ -21,28 +19,33 @@ class FormFieldWidget extends StatelessWidget {
   });
 
   @override
+  State<FormFieldWidget> createState() => _FormFieldWidgetState();
+}
+
+class _FormFieldWidgetState extends State<FormFieldWidget> {
+  bool _obsecureText = true;
+  @override
   Widget build(BuildContext context) {
-    final visibilityProvider = context.watch<VisibilityProvider>();
     return Column(
       children: [
         TextFormField(
-          controller: controller,
-          obscureText: isPassword ? !visibilityProvider.isVisible : false,
-          keyboardType: keyboardType,
-          validator: validator,
+          controller: widget.controller,
+          obscureText: widget.isPassword ? _obsecureText : false,
+          keyboardType: widget.keyboardType,
+          validator: widget.validator,
           decoration: InputDecoration(
-            hintText: hintText,
-            errorText: errorText,
+            hintText: widget.hintText,
+            errorText: widget.errorText,
             suffixIcon:
-                isPassword
+                widget.isPassword
                     ? IconButton(
                       onPressed: () {
-                        visibilityProvider.toggleVisibility();
+                        setState(() {
+                          _obsecureText = !_obsecureText;
+                        });
                       },
                       icon: Icon(
-                        visibilityProvider.isVisible
-                            ? Icons.visibility
-                            : Icons.visibility_off,
+                        _obsecureText ? Icons.visibility_off : Icons.visibility,
                       ),
                     )
                     : null,
@@ -52,22 +55,16 @@ class FormFieldWidget extends StatelessWidget {
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(AppSize.s12),
               borderSide: BorderSide(
-                color: errorText != null
-                       ? Colors.red
-                       : Colors.grey,
-              )
+                color: widget.errorText != null ? Colors.red : Colors.grey,
+              ),
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(AppSize.s12),
-              borderSide: const BorderSide(
-                color: Colors.red,
-              ),
+              borderSide: const BorderSide(color: Colors.red),
             ),
             focusedErrorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(AppSize.s12),
-              borderSide: const BorderSide(
-                color: Colors.red,
-              ),
+              borderSide: const BorderSide(color: Colors.red),
             ),
           ),
         ),

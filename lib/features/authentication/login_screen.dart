@@ -79,9 +79,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             fontWeight: FontWeightManager.bold,
                           ),
                         ),
-
+              
                         SizedBox(height: AppSize.s20),
-
+              
                         Text(
                           'Please enter your email and password to login before you place the order',
                           style: TextStyle(
@@ -90,9 +90,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             color: const Color.fromARGB(255, 87, 85, 85),
                           ),
                         ),
-
+              
                         SizedBox(height: AppSize.s18),
-
+              
                         FormFieldWidget(
                           controller: _emailController,
                           hintText: 'Email',
@@ -102,17 +102,17 @@ class _LoginScreenState extends State<LoginScreen> {
                             if (value == null || value.isEmpty) {
                               return 'Please enter your email';
                             }
-
+              
                             if (!value.contains('@')) {
                               return 'Please enter a valid email';
                             }
-
+              
                             return null;
                           },
                         ),
-
+              
                         SizedBox(height: AppSize.s18),
-
+              
                         FormFieldWidget(
                           controller: _passwordController,
                           hintText: 'Password',
@@ -126,9 +126,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             return null;
                           },
                         ),
-
+              
                         SizedBox(height: AppSize.s18),
-
+              
                         authProvider.isLoading
                             ? const Center(child: CircularProgressIndicator())
                             : ButtonWidget(
@@ -139,19 +139,19 @@ class _LoginScreenState extends State<LoginScreen> {
                                     _emailController.text,
                                     _passwordController.text,
                                   );
-
+              
                                   if (authProvider.isLoggedIn && context.mounted)
                                     // ignore: curly_braces_in_flow_control_structures, use_build_context_synchronously
                                     context.go('/home');
                                 }
-
+              
                                 _emailController.clear();
                                 _passwordController.clear();
                               },
                             ),
-
+              
                         SizedBox(height: AppSize.s24),
-
+              
                         GestureDetector(
                           onTap: () => context.push('/register'),
                           child: Container(

@@ -1,7 +1,7 @@
 import 'package:drip_store/model/data/user_model.dart';
 
 class LoginResponse {
-  final UserModel user;
+  final UserModel? user;
   final String token;
 
   LoginResponse({

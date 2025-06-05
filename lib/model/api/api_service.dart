@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:drip_store/model/data/login_response.dart';
+import 'package:drip_store/model/data/register_response.dart';
 import 'package:http/http.dart' as http;
 
 class ApiService {
@@ -11,13 +12,8 @@ class ApiService {
 
     final response = await http.post(
       url,
-      headers: {
-        "Accept": "application/json"
-      },
-      body: {
-        "email": email,
-        "password": password,
-      }
+      headers: {"Accept": "application/json"},
+      body: {"email": email, "password": password},
     );
 
     if (response.statusCode == 201) {
@@ -25,7 +21,36 @@ class ApiService {
     } else {
       final errorResponse = jsonDecode(response.body);
       throw Exception(
-        errorResponse['message'] ?? "Login failed, please try again."
+        errorResponse['message'] ?? "Login failed, please try again.",
+      );
+    }
+  }
+
+  Future<RegisterResponse> register(
+    String name,
+    String email,
+    String password,
+    String confirmPassword,
+  ) async {
+    final url = Uri.parse("$baseUrl/register");
+
+    final response = await http.post(
+      url,
+      headers: {"Accept": "application/json"},
+      body: {
+        "name": name,
+        "email": email,
+        "password": password,
+        "password_confirmation": confirmPassword,
+      },
+    );
+
+    final responseBody = jsonDecode(response.body);
+    if (response.statusCode == 201) {
+      return RegisterResponse.fromJson(responseBody);
+    } else {
+      throw Exception(
+        responseBody['message'] ?? "Registration failed, please try again.",
       );
     }
   }

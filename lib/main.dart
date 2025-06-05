@@ -1,6 +1,5 @@
 import 'package:drip_store/model/api/api_service.dart';
 import 'package:drip_store/provider/auth_provider.dart';
-import 'package:drip_store/provider/visibility_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -12,7 +11,6 @@ void main() {
     MultiProvider(
       providers: [
         Provider(create: (context)=> ApiService()),
-        ChangeNotifierProvider(create: (context) => VisibilityProvider()),
         ChangeNotifierProvider(create: (context)=> AuthProvider(
           context.read<ApiService>(),
         )),
@@ -36,6 +34,7 @@ class MyApp extends StatelessWidget {
       ),
       darkTheme: ThemeData.dark().copyWith(
         colorScheme: ColorScheme.fromSeed(
+        
           seedColor: Colors.deepPurple,
           brightness: Brightness.dark,
         ),

@@ -27,7 +27,7 @@ class UserModel {
     email: json['email'],
     phone: json['phone'],
     address: json['address'],
-    profilePicture: json['profile_picture'],
+    profilePicture: json['profile_picture'] ?? '',
     createdAt: DateTime.parse(json['created_at']),
     updatedAt: DateTime.parse(json['updated_at']),
     );
