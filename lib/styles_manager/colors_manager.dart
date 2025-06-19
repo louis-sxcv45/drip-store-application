@@ -8,6 +8,10 @@ class ColorsManager {
   static Color black = HexColor.fromHex('#000000');
   static Color grey = HexColor.fromHex('#757575');
   static Color platinum = HexColor.fromHex('#DEDEDE');
+  static Color celestialBlue = HexColor.fromHex('#0E75E2');
+  static Color blue = HexColor.fromHex('#0601B4');
+  static Color seasalt = HexColor.fromHex('#F9F9F9');
+  static Color red = HexColor.fromHex('#F01E2C');
 }
 
 extension HexColor on Color {
