@@ -1,6 +1,7 @@
 import 'package:drip_store/common_widgets/button_widget.dart';
 import 'package:drip_store/common_widgets/form_field.dart';
 import 'package:drip_store/provider/auth_provider.dart';
+import 'package:drip_store/provider/bottom_navigation_provider.dart';
 import 'package:drip_store/styles_manager/assets_image_icon.dart';
 import 'package:drip_store/styles_manager/colors_manager.dart';
 import 'package:drip_store/styles_manager/font_manager.dart';
@@ -142,6 +143,8 @@ class _LoginScreenState extends State<LoginScreen> {
               
                                   if (authProvider.isLoggedIn && context.mounted)
                                     // ignore: curly_braces_in_flow_control_structures, use_build_context_synchronously
+                                    context.read<BottomNavigationProvider>().setIndexNav(0);
+                                    // ignore: use_build_context_synchronously
                                     context.go('/home');
                                 }
               

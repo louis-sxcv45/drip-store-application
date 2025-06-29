@@ -20,9 +20,7 @@ class MenuWidget extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        decoration: BoxDecoration(
-      
-        ),
+        padding: const EdgeInsets.symmetric(vertical: AppPadding.p2),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

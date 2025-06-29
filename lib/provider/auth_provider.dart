@@ -1,15 +1,20 @@
+import 'dart:convert';
+
 import 'package:drip_store/model/api/api_service.dart';
 import 'package:drip_store/model/data/login_response.dart';
 import 'package:drip_store/model/data/register_response.dart';
+import 'package:drip_store/model/data/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthProvider extends ChangeNotifier {
   final ApiService _apiService;
   static const String _tokenKey = 'token';
+  static const String _userKey = 'user';
+  
 
   AuthProvider(this._apiService) {
-    _initializeAuth();
+    initializeAuth();
   }
 
   LoginResponse? _loginResponse;
@@ -32,13 +37,16 @@ class AuthProvider extends ChangeNotifier {
       _loginResponse != null && _loginResponse!.token.isNotEmpty;
   bool get isInitialized => _isInitialized;
 
-  Future<void> _initializeAuth() async {
+
+  Future<void> initializeAuth() async {
     try {
       final prefs = await SharedPreferences.getInstance();
       final token = prefs.getString(_tokenKey);
+      final user = prefs.getString(_userKey);
 
-      if (token != null) {
-        _loginResponse = LoginResponse(user: null, token: token);
+      if (token != null && user != null) {
+        final userModel = UserModel.fromJson(jsonDecode(user));
+        _loginResponse = LoginResponse(user: userModel, token: token);
       }
     } catch (e) {
       await SharedPreferences.getInstance().then((prefs) {
@@ -62,7 +70,13 @@ class AuthProvider extends ChangeNotifier {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString(_tokenKey, _loginResponse!.token);
 
-      debugPrint("Login successful: ${_loginResponse!.user?.name}");
+      await prefs.setString(
+        _userKey,
+        jsonEncode(_loginResponse!.user.toJson()),
+      );
+
+
+      debugPrint("Login successful: ${_loginResponse!.user.name}");
       debugPrint("Token: ${_loginResponse!.token}");
     } catch (e) {
       final message = e.toString();
@@ -103,15 +117,43 @@ class AuthProvider extends ChangeNotifier {
       debugPrint("Registration successful: ${_registerResponse!.user?.name}");
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString(_tokenKey, _registerResponse!.token);
+            await prefs.setString(
+        _userKey,
+        jsonEncode(_loginResponse!.user.toJson()),
+      );
       debugPrint("Token: ${_registerResponse!.token}");
+      debugPrint("User: ${_registerResponse!.user?.name}");
 
       _loginResponse = LoginResponse(
-        user: _registerResponse!.user,
+        user: _registerResponse!.user!,
         token: _registerResponse!.token,
       );
     } catch (e) {
       _regisError = e.toString().replaceFirst('Exception: ', '');
       debugPrint("Registration error: $_regisError");
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> logout() async {
+    _isLoading = true;
+    notifyListeners();
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString(_tokenKey);
+
+      if (token != null) {
+        await _apiService.logout(token);
+        await prefs.remove(_tokenKey);
+        debugPrint('Token $token removed from SharedPreferences');
+        _loginResponse = null;
+        _registerResponse = null;
+        debugPrint('Logged out successfully');
+      }
+    } catch (e) {
+      debugPrint('Error during logout: $e');
     } finally {
       _isLoading = false;
       notifyListeners();

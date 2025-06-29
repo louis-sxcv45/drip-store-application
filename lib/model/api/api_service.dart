@@ -1,11 +1,14 @@
 import 'dart:convert';
 
 import 'package:drip_store/model/data/login_response.dart';
+import 'package:drip_store/model/data/product_list_response.dart';
+import 'package:drip_store/model/data/profile_user_response.dart';
 import 'package:drip_store/model/data/register_response.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class ApiService {
-  static const String baseUrl = "http://192.168.100.115:8000/api";
+  static const String baseUrl = "http://192.168.0.115:8000/api";
 
   Future<LoginResponse> login(String email, String password) async {
     final url = Uri.parse("$baseUrl/login");
@@ -51,6 +54,69 @@ class ApiService {
     } else {
       throw Exception(
         responseBody['message'] ?? "Registration failed, please try again.",
+      );
+    }
+  }
+
+  Future<ProfileUserResponse> getProfile(String token) async {
+    final url = Uri.parse("$baseUrl/profile");
+
+    final response = await http.get(
+      url,
+      headers: {
+        "Accept": "application/json",
+        "Authorization": "Bearer $token"
+      }
+    );
+
+    final responseBody = jsonDecode(response.body);
+    debugPrint("Response Body: $responseBody");
+    if (response.statusCode == 200) {
+      return ProfileUserResponse.fromJson(responseBody);
+    } else {
+      throw Exception (
+        responseBody['message'] ?? "Failed to fetch profile data, please try again."
+      );
+    }
+  }
+
+  Future<void> logout(String token) async {
+    final url = Uri.parse("$baseUrl/logout");
+
+    final response = await http.post(
+      url,
+      headers: {
+        "Accept" : "application/json",
+        "Authorization" : "Bearer $token"
+      }
+    );
+
+    final responseBody = jsonDecode(response.body);
+    if (response.statusCode == 200 || response.statusCode == 401) {
+      return responseBody['message'];
+    }
+  }
+
+
+  Future<ProductListResponse> getProducts() async {
+    final url = Uri.parse("$baseUrl/products");
+
+    final response = await http.get(
+      url,
+      headers: {
+        "Accept" : "application/json",
+      }
+    );
+
+    final responseBody = jsonDecode(response.body);
+
+    if (response.statusCode == 200) {
+      debugPrint("Products: $responseBody");
+
+      return ProductListResponse.fromJson(responseBody);
+    } else {
+      throw Exception(
+        responseBody['message'] ?? 'Failed to fetch profile data, please try again.'
       );
     }
   }

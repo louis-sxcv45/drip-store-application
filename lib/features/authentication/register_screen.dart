@@ -2,6 +2,7 @@ import 'package:drip_store/common_widgets/button_widget.dart';
 import 'package:drip_store/common_widgets/form_field.dart';
 import 'package:drip_store/common_widgets/text_button_widget.dart';
 import 'package:drip_store/provider/auth_provider.dart';
+import 'package:drip_store/provider/bottom_navigation_provider.dart';
 import 'package:drip_store/styles_manager/colors_manager.dart';
 import 'package:drip_store/styles_manager/font_manager.dart';
 import 'package:drip_store/styles_manager/values_manager.dart';
@@ -199,7 +200,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     _confirmPasswordController.text,
                                   );
 
-                                  if (authProvider.regisError == null && context.mounted) {
+                                  if (authProvider.isLoggedIn && context.mounted) {
+                                    context.read<BottomNavigationProvider>().setIndexNav(0);
                                     context.go('/home');
                                   }
                                 }
