@@ -141,15 +141,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                     _passwordController.text,
                                   );
               
-                                  if (authProvider.isLoggedIn && context.mounted)
+                                  if (authProvider.isLoggedIn && context.mounted){
                                     // ignore: curly_braces_in_flow_control_structures, use_build_context_synchronously
                                     context.read<BottomNavigationProvider>().setIndexNav(0);
                                     // ignore: use_build_context_synchronously
                                     context.go('/home');
+                                  }
                                 }
-              
-                                _emailController.clear();
-                                _passwordController.clear();
                               },
                             ),
               

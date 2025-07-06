@@ -33,6 +33,7 @@ class MainScreen extends StatelessWidget {
         barItems: [
           BarItem(filledIcon: Icons.home, outlinedIcon: Icons.home_outlined),
           BarItem(filledIcon: Icons.shopping_cart, outlinedIcon: Icons.shopping_cart_outlined),
+          BarItem(filledIcon: Icons.history, outlinedIcon: Icons.history_outlined),
           BarItem(filledIcon: Icons.person, outlinedIcon: Icons.person_outlined),
         ],
         bottomPadding: AppPadding.p8,
@@ -47,6 +48,9 @@ class MainScreen extends StatelessWidget {
               context.go('/cart');
               break;
             case 2:
+              context.go('/history');
+              break;
+            case 3:
               context.go('/profile');
               break;
           }

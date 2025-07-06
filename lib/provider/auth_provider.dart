@@ -100,6 +100,8 @@ class AuthProvider extends ChangeNotifier {
   Future<void> register(
     String name,
     String email,
+    String phone,
+    String address,
     String password,
     String confirmPassword,
   ) async {
@@ -111,6 +113,8 @@ class AuthProvider extends ChangeNotifier {
       _registerResponse = await _apiService.register(
         name,
         email,
+        phone,
+        address,
         password,
         confirmPassword,
       );
@@ -119,7 +123,7 @@ class AuthProvider extends ChangeNotifier {
       await prefs.setString(_tokenKey, _registerResponse!.token);
             await prefs.setString(
         _userKey,
-        jsonEncode(_loginResponse!.user.toJson()),
+        jsonEncode(_registerResponse!.user?.toJson()),
       );
       debugPrint("Token: ${_registerResponse!.token}");
       debugPrint("User: ${_registerResponse!.user?.name}");

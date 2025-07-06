@@ -21,6 +21,8 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
+  final _phoneController = TextEditingController();
+  final _addressController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
 
@@ -155,6 +157,38 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         SizedBox(height: AppSize.s20),
 
                         FormFieldWidget(
+                          controller: _phoneController,
+                          hintText: 'Phone Number',
+                          keyboardType: TextInputType.phone,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Phone is required';
+                            } else if (!RegExp(
+                              r'^[0-9]{10,13}$',
+                            ).hasMatch(value)) {
+                              return 'Invalid Phone Number (10-13 digit)';
+                            }
+                            return null;
+                          },
+                        ),
+
+                        SizedBox(height: AppSize.s20),
+
+                        FormFieldWidget(
+                          controller: _addressController,
+                          hintText: 'Address',
+                          keyboardType: TextInputType.streetAddress,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Address is required';
+                            }
+                            return null;
+                          },
+                        ),
+
+                        SizedBox(height: AppSize.s20),
+
+                        FormFieldWidget(
                           controller: _passwordController,
                           hintText: 'Password',
                           isPassword: true,
@@ -196,19 +230,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   await authProvider.register(
                                     _nameController.text,
                                     _emailController.text,
+                                    _phoneController.text,
+                                    _addressController.text,
                                     _passwordController.text,
                                     _confirmPasswordController.text,
                                   );
 
-                                  if (authProvider.isLoggedIn && context.mounted) {
-                                    context.read<BottomNavigationProvider>().setIndexNav(0);
+                                  if (authProvider.isLoggedIn &&
+                                      context.mounted) {
+                                    context
+                                        .read<BottomNavigationProvider>()
+                                        .setIndexNav(0);
+                                    _nameController.clear();
+                                    _emailController.clear();
+                                    _phoneController.clear();
+                                    _addressController.clear();
+                                    _passwordController.clear();
+                                    _confirmPasswordController.clear();
                                     context.go('/home');
                                   }
                                 }
-                                _nameController.clear();
-                                _emailController.clear();
-                                _passwordController.clear();
-                                _confirmPasswordController.clear();
                               },
                             ),
 

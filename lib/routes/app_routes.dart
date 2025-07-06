@@ -2,10 +2,10 @@ import 'package:drip_store/features/authentication/login_screen.dart';
 import 'package:drip_store/features/authentication/register_screen.dart';
 import 'package:drip_store/features/cart/cart_screen.dart';
 import 'package:drip_store/features/detail_page/detail_product_screen.dart';
+import 'package:drip_store/features/history/payment_history.dart';
 import 'package:drip_store/features/home/home_screen.dart';
 import 'package:drip_store/features/main_screen.dart';
-import 'package:drip_store/features/profile/menu_profile/edit_account_screen.dart';
-import 'package:drip_store/features/profile/menu_profile/edit_password_screen.dart';
+import 'package:drip_store/features/payment/midtrans_payment_screen.dart';
 import 'package:drip_store/features/profile/profile_screen.dart';
 import 'package:drip_store/model/api/api_service.dart';
 import 'package:drip_store/provider/auth_provider.dart';
@@ -64,23 +64,27 @@ final GoRouter _appRouter = GoRouter(
 
         GoRoute(
           path: '/cart',
-          builder: (context, state) => const CartScreen()
+          builder: (context, state) => const CartScreen(),
+
+          routes: [
+            GoRoute(
+              path: 'payment/:snap_token',
+              builder: (context, state) {
+                final snapToken = state.pathParameters['snap_token'];
+                return MidtransPaymentScreen(snapToken: snapToken.toString(),);
+              },
+            )
+          ]
+        ),
+
+        GoRoute(
+          path: '/history',
+          builder: (context, state) => const PaymentHistory()
         ),
 
         GoRoute(
           path: '/profile',
           builder: (context, state) => const ProfileScreen(),
-
-          routes: [
-            GoRoute(
-              path: 'edit_account',
-              builder: (context, state) => const EditAccountScreen()
-            ),
-
-            GoRoute(path: 'password',
-            builder: (context, state) => const EditPasswordScreen()
-            ),
-          ]
         ),
       ],
     ),

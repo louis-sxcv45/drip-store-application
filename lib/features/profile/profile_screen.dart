@@ -38,13 +38,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
             SingleChildScrollView(
               child:
                   isLoggedin
-                      ? ProfileBarWidget(
-                        image:
-                            getProfile?.user?.profilePicture ??
-                            'https://wallpapers.com/images/hd/naruto-pictures-ifftdoc33971s72e.jpg',
+                      ? 
+                        isLoading
+                        ? const Center(
+                          child: CircularProgressIndicator(),
+                        )
+                        : ProfileBarWidget(
+                        image: "https://wallpapers.com/images/hd/naruto-pictures-ifftdoc33971s72e.jpg",
                         name: getProfile?.user?.name ?? 'Guest',
                         email: getProfile?.user?.email ?? '',
-                      )
+                        )
                       : Container(
                         margin: const EdgeInsets.symmetric(
                           horizontal: AppMargin.m12,

@@ -1,7 +1,11 @@
 import 'package:drip_store/model/api/api_service.dart';
+import 'package:drip_store/model/sqlite/local_database_service.dart';
 import 'package:drip_store/provider/auth_provider.dart';
 import 'package:drip_store/provider/bottom_navigation_provider.dart';
 import 'package:drip_store/provider/greeting_time_provider.dart';
+import 'package:drip_store/provider/history_provider.dart';
+import 'package:drip_store/provider/list_cart_provider.dart';
+import 'package:drip_store/provider/payment_provider.dart';
 import 'package:drip_store/provider/product_list_provider.dart';
 import 'package:drip_store/provider/profile_user_provider.dart';
 import 'package:drip_store/styles_manager/colors_manager.dart';
@@ -26,6 +30,15 @@ void main() {
         ),
         ChangeNotifierProvider(
           create: (context) => ProductListProvider(context.read<ApiService>()),
+        ),
+        ChangeNotifierProvider(create: (context)=>ListCartProvider(
+          LocalDatabaseService()
+        )),
+        ChangeNotifierProvider(create: (context) => PaymentProvider(
+          context.read<ApiService>()
+        )),
+        ChangeNotifierProvider(
+          create: (context) => HistoryProvider(context.read<ApiService>()),
         ),
       ],
       child: const MyApp(),
