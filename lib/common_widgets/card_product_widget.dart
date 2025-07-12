@@ -1,3 +1,4 @@
+import 'package:drip_store/styles_manager/assets_image_icon.dart';
 import 'package:drip_store/styles_manager/font_manager.dart';
 import 'package:drip_store/styles_manager/values_manager.dart';
 import 'package:flutter/material.dart';
@@ -80,7 +81,11 @@ class CardProductWidget extends StatelessWidget {
             child: Row(
               children: [
                 CircleAvatar(
-                  backgroundImage: NetworkImage(storeLogo),
+                  backgroundImage: storeLogo.isEmpty
+                  ? const AssetImage(
+                      '${AssetsImageIcon.assetPath}/default_logo.jpg',
+                    )
+                  : NetworkImage(storeLogo),
                   radius: 12,
                 ),
 

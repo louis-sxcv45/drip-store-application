@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class ApiService {
-  static const String baseUrl = "https://917f-2001-448a-10cc-3ec9-dca2-94ab-85fe-595b.ngrok-free.app/api";
+  static const String baseUrl = "https://016d3e36b154.ngrok-free.app/api";
 
   Future<LoginResponse> login(String email, String password) async {
     final url = Uri.parse("$baseUrl/login");
@@ -90,7 +90,7 @@ class ApiService {
   Future<void> logout(String token) async {
     final url = Uri.parse("$baseUrl/logout");
 
-    final response = await http.post(
+    final response = await http.delete(
       url,
       headers: {
         "Accept" : "application/json",

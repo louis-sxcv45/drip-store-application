@@ -18,9 +18,9 @@ class ListCartProvider extends ChangeNotifier {
   DetailProductModel? _selectedItem;
   DetailProductModel? get selectedItem => _selectedItem;
 
-  Future<void> saveCartItem(DetailProductModel item) async {
+  Future<void> saveCartItem(DetailProductModel item, int userId) async {
     try {
-      final result = await _service.insertItem(item);
+      final result = await _service.insertItem(item, userId);
       final isError = result == 0;
 
       if (isError) {
@@ -37,9 +37,9 @@ class ListCartProvider extends ChangeNotifier {
     }
   }
   
-  Future<void> getCartItems() async {
+  Future<void> getCartItems(int userId) async {
     try {
-      _cartItems = await _service.getAllProducts();
+      _cartItems = await _service.getAllProducts(userId);
       _message = 'Cart items loaded successfully';
       debugPrint('Success: $_message');
       notifyListeners();

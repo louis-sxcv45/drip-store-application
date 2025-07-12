@@ -21,6 +21,7 @@ class LocalDatabaseService {
         name_store TEXT,
         store_id INTEGER,
         logo TEXT,
+        user_id INTEGER,
         product_sizes TEXT
       )
     """);
@@ -36,18 +37,23 @@ class LocalDatabaseService {
     );
   }
 
-  Future<int> insertItem(DetailProductModel product) async {
+  Future<int> insertItem(DetailProductModel product, int userId) async {
     final db = await _intializeDb();
 
     final data = product.toJson();
+    data['user_id'] = userId;
     final id = await db.insert(_tableName, data, conflictAlgorithm: ConflictAlgorithm.replace);
 
     return id;
   }
 
-  Future<List<DetailProductModel>> getAllProducts() async {
+  Future<List<DetailProductModel>> getAllProducts(int userId) async {
     final db = await _intializeDb();
-    final results = await db.query(_tableName);
+    final results = await db.query(
+      _tableName,
+      where: 'user_id = ?',
+      whereArgs: [userId],
+    );
 
     return results.map((product)=> DetailProductModel.fromJson(product)).toList();
   }

@@ -12,6 +12,7 @@ class DetailProductModel {
   final String nameStore;
   final int storeId;
   final String storeLogo;
+  final int? userId;
   List<ProductSizeModel> productSizes;
 
   DetailProductModel({
@@ -25,6 +26,7 @@ class DetailProductModel {
     required this.nameStore,
     required this.storeId,
     required this.storeLogo,
+    required this.userId,
     required this.productSizes,
   });
 
@@ -46,7 +48,7 @@ class DetailProductModel {
           );
         }
       } catch (e) {
-        print('Error parsing product_sizes: $e');
+        // print('Error parsing product_sizes: $e');
         sizes = []; // Default to empty list if parsing fails
       }
     }
@@ -62,6 +64,7 @@ class DetailProductModel {
       nameStore: json['name_store'] ?? '',
       storeId: json['store_id'] ?? 0,
       storeLogo: json['logo'] ?? '',
+      userId: json['user_id'], // Optional field, can be null
       productSizes: sizes,
     );
   }
@@ -78,6 +81,7 @@ class DetailProductModel {
       'name_store': nameStore,
       'store_id': storeId,
       'logo': storeLogo,
+      'user_id': userId,
       'product_sizes': jsonEncode(productSizes.map((size) => size.toJson()).toList()),
     };
   }

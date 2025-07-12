@@ -1,5 +1,6 @@
 import 'package:drip_store/provider/auth_provider.dart';
 import 'package:drip_store/provider/history_provider.dart';
+import 'package:drip_store/styles_manager/assets_image_icon.dart';
 import 'package:drip_store/styles_manager/font_manager.dart';
 import 'package:drip_store/styles_manager/values_manager.dart';
 import 'package:flutter/material.dart';
@@ -16,8 +17,8 @@ class PaymentHistory extends StatefulWidget {
 class _PaymentHistoryState extends State<PaymentHistory> {
   @override
   void initState() {
-    // TODO: implement initState
     Future.microtask(() {
+      // ignore: use_build_context_synchronously
       context.read<HistoryProvider>().fetchHistory();
     });
 
@@ -59,7 +60,13 @@ class _PaymentHistoryState extends State<PaymentHistory> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             CircleAvatar(
-                              backgroundImage: NetworkImage(product.storeLogo),
+                              backgroundImage: product.storeLogo.isEmpty
+                              ?
+                                const AssetImage(
+                                  '${AssetsImageIcon.assetPath}/default_logo.jpg',
+                                )
+
+                              : NetworkImage(product.storeLogo),
                               radius: 12,
                             ),
                         

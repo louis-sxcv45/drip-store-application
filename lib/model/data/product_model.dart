@@ -4,7 +4,7 @@ class ProductModel {
   String price;
   String image;
   String nameStore;
-  String storeLogo;
+  String? storeLogo;
 
   ProductModel({
     required this.id,
@@ -22,7 +22,7 @@ class ProductModel {
       price: json['price'],
       image: json['image'],
       nameStore: json['name_store'],
-      storeLogo: json['logo'],
+      storeLogo: json['logo'] ?? '',
     );
   }
 }

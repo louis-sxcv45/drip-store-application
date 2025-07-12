@@ -3,6 +3,7 @@ import 'package:drip_store/provider/auth_provider.dart';
 import 'package:drip_store/provider/bottom_navigation_provider.dart';
 import 'package:drip_store/provider/list_cart_provider.dart';
 import 'package:drip_store/provider/product_list_provider.dart';
+import 'package:drip_store/styles_manager/assets_image_icon.dart';
 import 'package:drip_store/styles_manager/font_manager.dart';
 import 'package:drip_store/styles_manager/values_manager.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +26,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
     Future.microtask(() {
       // ignore: use_build_context_synchronously
       context.read<ProductListProvider>().fetchDetailProduct(widget.productId);
+      
     });
   }
 
@@ -34,7 +36,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
     final isLoading = context.watch<ProductListProvider>().isLoading;
     final isLoggedIn = context.watch<AuthProvider>().isLoggedIn;
     final detailProduct = getDetailProduct?.detailProduct;
-
+    final userId = context.read<AuthProvider>().loginResponse?.user.id ?? 0;
     return Scaffold(
       appBar: AppBar(title: Text('Detail Product')),
       body:
@@ -163,7 +165,12 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                       child: Row(
                         children: [
                           CircleAvatar(
-                            backgroundImage: NetworkImage(
+                            backgroundImage: 
+                            detailProduct.storeLogo.isEmpty
+                                ? const AssetImage(
+                                    '${AssetsImageIcon.assetPath}/default_logo.jpg',
+                                  )
+                                :NetworkImage(
                               detailProduct.storeLogo,
                             ),
                             radius: 34,
@@ -211,7 +218,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                           if (product != null) {
                             final cartProvider =
                                 context.read<ListCartProvider>();
-                            await cartProvider.saveCartItem(product);
+                            await cartProvider.saveCartItem(product, userId);
 
                             // ignore: use_build_context_synchronously
                             context.go('/cart');

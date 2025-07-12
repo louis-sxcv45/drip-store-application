@@ -18,13 +18,16 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
+  late int userId;
   @override
   void initState() {
     super.initState();
     // You can add any initialization logic here if needed
     Future.microtask(() {
       // ignore: use_build_context_synchronously
-      context.read<ListCartProvider>().getCartItems();
+      userId = context.read<AuthProvider>().loginResponse?.user.id ?? 0;
+      // ignore: use_build_context_synchronously
+      context.read<ListCartProvider>().getCartItems(userId);
     });
   }
 
@@ -70,7 +73,7 @@ class _CartScreenState extends State<CartScreen> {
                                   // ignore: use_build_context_synchronously
                                   await context
                                       .read<ListCartProvider>()
-                                      .getCartItems();
+                                      .getCartItems(userId);
                                 },
                                 icon: Icon(
                                   Icons.delete,
@@ -150,10 +153,12 @@ class _CartScreenState extends State<CartScreen> {
                                 debugPrint('Snap Token: $snapToken');
 
                                 if (snapToken != null) {
+                                  // ignore: use_build_context_synchronously
                                   context.push(
                                     '/cart/payment/$snapToken',
                                   );
                                 } else {
+                                  // ignore: use_build_context_synchronously
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
                                       content: Text(
