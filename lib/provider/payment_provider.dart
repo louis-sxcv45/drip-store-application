@@ -14,7 +14,7 @@ class PaymentProvider extends ChangeNotifier{
   PaymentResponse? _payment;
   PaymentResponse? get payment => _payment;
 
-  Future<void> processPayment(List<int>productIds, int storeId) async {
+  Future<void> processPayment(List<int>productIds) async {
     _isLoading = true;
     notifyListeners();
 
@@ -23,7 +23,7 @@ class PaymentProvider extends ChangeNotifier{
       final token = prefs.getString(_token);
 
       if (token != null) {
-        _payment = await _apiService.createPayment(productIds, storeId, token);
+        _payment = await _apiService.createPayment(productIds, token);
       }
     } catch (e) {
       debugPrint('Error processing payment: $e');

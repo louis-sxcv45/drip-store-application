@@ -31,6 +31,10 @@ final GoRouter _appRouter = GoRouter(
     if (auth.isLoggedIn && (isLoginPage || isRegisterPage)) {
       return '/home';
     }
+    
+    // if (!auth.isLoggedIn && !isLoginPage && !isRegisterPage) {
+    //   return '/login';
+    // }
 
     return null;
   },

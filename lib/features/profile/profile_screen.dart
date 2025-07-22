@@ -2,6 +2,7 @@ import 'package:drip_store/common_widgets/guest_action_widget.dart';
 import 'package:drip_store/common_widgets/profile_bar_widget.dart';
 import 'package:drip_store/provider/auth_provider.dart';
 import 'package:drip_store/provider/profile_user_provider.dart';
+import 'package:drip_store/styles_manager/colors_manager.dart';
 import 'package:drip_store/styles_manager/font_manager.dart';
 import 'package:drip_store/styles_manager/values_manager.dart';
 import 'package:flutter/material.dart';
@@ -64,7 +65,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
             if (isLoading)
             Container(
-              color: Colors.black.withOpacity(0.3),
+              color: ColorsManager.black.withAlpha((0.3 * 255).toInt()),
               child: const Center(
                 child: CircularProgressIndicator(),
               ),

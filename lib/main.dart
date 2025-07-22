@@ -11,11 +11,13 @@ import 'package:drip_store/provider/profile_user_provider.dart';
 import 'package:drip_store/styles_manager/colors_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 import 'package:drip_store/routes/app_routes.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+   await initializeDateFormatting('id_ID', 'symbols');
   runApp(
     MultiProvider(
       providers: [

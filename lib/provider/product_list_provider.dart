@@ -47,10 +47,13 @@ class ProductListProvider extends ChangeNotifier{
 
   Future<void> fetchDetailProduct(int productId) async {
     _isLoading = true;
+
+    debugPrint('Fetching details for product ID: $productId');
+    debugPrint('is loading before API call: $_isLoading');
     try {
       final detailProduct = await _apiService.getDetailProduct(productId);
+      debugPrint('Detail product fetched successfully: ${detailProduct.detailProduct.id}');
       _detailProduct = detailProduct;
-      
     } catch (e) {
       _detailProduct = null;
     } finally {

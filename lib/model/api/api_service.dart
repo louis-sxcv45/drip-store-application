@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class ApiService {
-  static const String baseUrl = "https://016d3e36b154.ngrok-free.app/api";
+  static const String baseUrl = "https://dripstore.louisginting.my.id/api";
 
   Future<LoginResponse> login(String email, String password) async {
     final url = Uri.parse("$baseUrl/login");
@@ -130,7 +130,6 @@ class ApiService {
 
   Future<DetailProductResponse> getDetailProduct(int productId) async {
     final url = Uri.parse("$baseUrl/products/$productId");
-
     final response = await http.get(
       url,
       headers: {
@@ -151,7 +150,7 @@ class ApiService {
 
   Future<PaymentResponse> createPayment(
     List<int> productIds,
-    int storeId,
+
     String token
   ) async {
     final url = Uri.parse("$baseUrl/transaksi/checkout");
@@ -164,7 +163,6 @@ class ApiService {
       },
       body: jsonEncode({
         "product_ids": productIds,
-        "store_id": storeId,
       })
     );
 

@@ -93,7 +93,7 @@ class _CartScreenState extends State<CartScreen> {
                       color: ColorsManager.white,
                       boxShadow: [
                         BoxShadow(
-                          color: ColorsManager.grey.withOpacity(0.2),
+                          color: ColorsManager.grey.withAlpha((0.2 * 255).toInt()),
                           blurRadius: 10,
                           offset: const Offset(0, -2),
                         ),
@@ -138,18 +138,15 @@ class _CartScreenState extends State<CartScreen> {
 
                                 final productIds =
                                     cartItems.map((item) => item.id).toList();
-                                final storeId = cartItems.first.storeId;
 
                                 await paymentProvider.processPayment(
                                   productIds,
-                                  storeId,
                                 );
 
                                 final snapToken =
                                     paymentProvider.payment?.snapToken;
 
                                 debugPrint('productIds: $productIds');
-                                debugPrint('Store ID: $storeId');
                                 debugPrint('Snap Token: $snapToken');
 
                                 if (snapToken != null) {
